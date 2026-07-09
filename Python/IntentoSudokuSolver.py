@@ -1,60 +1,7 @@
-import random
 from itertools import permutations, product
-import time
+
 
 board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
-
-modificables = []
-
-for i in range(len(board)):
-    for j in range(len(board)):
-        if (board[i][j] == "."):
-            modificables.append([i,j])
-            
-
-numero_modificables = len(modificables)
-
-
-"""
-suma = 3
-
-suma_filas = 0
-
-suma_columnas = 0
-
-suma_cajas = 0
-"""
-
-#while (suma != 0):
-copia_board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
-
-#Columnas
-columnas = []
-
-for i in range(len(board)):
-    columna = []
-    for j in range(len(board)):
-        columna.append(copia_board[j][i])
-    columnas.append(columna)
-
-
-#print(columnas)
-
-#Cajas
-
-cajas = []
-
-limites = [[0,1,2], [3,4,5], [6,7,8]]
-
-for i in limites:
-    for j in limites:
-        #print(i,j)
-        caja = []
-        for k in i:
-            for m in j:
-                caja.extend(columnas[k][m])
-        
-        cajas.append(caja)
 
 
 def requisitos(sudoku):
@@ -109,19 +56,11 @@ def requisitos(sudoku):
 
 
 
-
-
-"""
-a = [4,6,7]
-
-print(list(permutations(a))[0][0])
-"""
 diccionario_combinaciones = {}
 
 combinaciones_por_fila = []
 
 for i in range(len(board)):
-    #print("Fila {}".format(str(i)))
     mi_board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
     numero = 0
     indice_numeros_en_la_fila = []
@@ -163,14 +102,14 @@ for i in range(len(board)):
     
     
     combinaciones_por_fila.append(numero)
-    #print("Número de combinaciones de la fila "+str(i)+" : "+str(numero))        
+            
 
 
 
 
 
 
-#print(combinaciones_por_fila)
+
     
 
 
@@ -179,214 +118,52 @@ for i in range(len(board)):
 
 
 solucion = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
-#print(solucion)
-
-
-indices_0 = list(range(combinaciones_por_fila[0]))
-indices_1 = list(range(combinaciones_por_fila[1]))
-
-
-producto = list(product(indices_0,indices_1))
-
-
-for i in range(len(producto)):
-    producto[i] = list(producto[i])
 
 
 
+
+indices = list(range(combinaciones_por_fila[0]))
 indices_unidos = []
+i = 1
 
-for x in producto:
-    solucion[0] = diccionario_combinaciones["CombFila0-"+str(x[0])]
-    solucion[1] = diccionario_combinaciones["CombFila1-"+str(x[1])]
+while (i < 9):
+    indices_iteracion = list(range(combinaciones_por_fila[i]))
     
-    if (requisitos(solucion) == 1):
-        indices_unidos.append(x)
-
-#print(indices_unidos)
-#print(len(indices_unidos))
-
-indices_2 = list(range(combinaciones_por_fila[2]))
-
-producto_2 = list(product(indices_unidos, indices_2))
-
-
-#print(producto_2)
-
-
-
-indices_unidos_2 = []
-
-for x in producto_2:
-    solucion[0] = diccionario_combinaciones["CombFila0-"+str(x[0][0])]
-    solucion[1] = diccionario_combinaciones["CombFila1-"+str(x[0][1])]
-    solucion[2] = diccionario_combinaciones["CombFila2-"+str(x[1])]
-    
-    if (requisitos(solucion) == 1):
-        mi_lista = list(x[0])
-        mi_lista.append(x[1])
-        indices_unidos_2.append(mi_lista)
-    
+    if (i == 1):
+        producto_iteracion = list(product(indices, indices_iteracion))
         
         
-    
+        for x in producto_iteracion:
+            solucion[0] = diccionario_combinaciones["CombFila0-"+str(x[0])]
+            solucion[1] = diccionario_combinaciones["CombFila1-"+str(x[1])]
+            
+            if (requisitos(solucion) == 1):
+                mi_lista = [x[0], x[1]]
+                indices_unidos.append(mi_lista)
         
-
-
-#print(indices_unidos_2)
-
-indices_3 = list(range(combinaciones_por_fila[3]))
-
-producto_3 = list(product(indices_unidos_2, indices_3))
-
-#print(producto_3)
-
-indices_unidos_3 = []
-
-for x in producto_3:
-    solucion[0] = diccionario_combinaciones["CombFila0-"+str(x[0][0])]
-    solucion[1] = diccionario_combinaciones["CombFila1-"+str(x[0][1])]
-    solucion[2] = diccionario_combinaciones["CombFila2-"+str(x[0][2])]
-    solucion[3] = diccionario_combinaciones["CombFila3-"+str(x[1])]
-    
-    if (requisitos(solucion) == 1):
-        mi_lista = list(x[0])
-        mi_lista.append(x[1])
-        indices_unidos_3.append(mi_lista)
-
-
-
-#print(indices_unidos_3)
-
-indices_4 = list(range(combinaciones_por_fila[4]))
-
-producto_4 = list(product(indices_unidos_3, indices_4))
-
-#print(producto_4)
-
-indices_unidos_4 = []
-
-for x in producto_4:
-    solucion[0] = diccionario_combinaciones["CombFila0-"+str(x[0][0])]
-    solucion[1] = diccionario_combinaciones["CombFila1-"+str(x[0][1])]
-    solucion[2] = diccionario_combinaciones["CombFila2-"+str(x[0][2])]
-    solucion[3] = diccionario_combinaciones["CombFila3-"+str(x[0][3])]
-    solucion[4] = diccionario_combinaciones["CombFila4-"+str(x[1])]
-    
-    if (requisitos(solucion) == 1):
-        mi_lista = list(x[0])
-        mi_lista.append(x[1])
-        indices_unidos_4.append(mi_lista)
-
-
-
-#print(indices_unidos_4)
-
-indices_5 = list(range(combinaciones_por_fila[5]))
-
-producto_5 = list(product(indices_unidos_4, indices_5))
-
-#print(producto_5)
-
-indices_unidos_5 = []
-
-for x in producto_5:
-    solucion[0] = diccionario_combinaciones["CombFila0-"+str(x[0][0])]
-    solucion[1] = diccionario_combinaciones["CombFila1-"+str(x[0][1])]
-    solucion[2] = diccionario_combinaciones["CombFila2-"+str(x[0][2])]
-    solucion[3] = diccionario_combinaciones["CombFila3-"+str(x[0][3])]
-    solucion[4] = diccionario_combinaciones["CombFila4-"+str(x[0][4])]
-    solucion[5] = diccionario_combinaciones["CombFila5-"+str(x[1])]
-    
-    if (requisitos(solucion) == 1):
-        mi_lista = list(x[0])
-        mi_lista.append(x[1])
-        indices_unidos_5.append(mi_lista)
-
-
-
-#print(indices_unidos_5)
-
-indices_6 = list(range(combinaciones_por_fila[6]))
-
-producto_6 = list(product(indices_unidos_5, indices_6))
-
-#print(producto_6)
-
-indices_unidos_6 = []
-
-for x in producto_6:
-    solucion[0] = diccionario_combinaciones["CombFila0-"+str(x[0][0])]
-    solucion[1] = diccionario_combinaciones["CombFila1-"+str(x[0][1])]
-    solucion[2] = diccionario_combinaciones["CombFila2-"+str(x[0][2])]
-    solucion[3] = diccionario_combinaciones["CombFila3-"+str(x[0][3])]
-    solucion[4] = diccionario_combinaciones["CombFila4-"+str(x[0][4])]
-    solucion[5] = diccionario_combinaciones["CombFila5-"+str(x[0][5])]
-    solucion[6] = diccionario_combinaciones["CombFila6-"+str(x[1])]
-    
-    if (requisitos(solucion) == 1):
-        mi_lista = list(x[0])
-        mi_lista.append(x[1])
-        indices_unidos_6.append(mi_lista)
-
-
-
-#print(indices_unidos_6)
-
-indices_7 = list(range(combinaciones_por_fila[7]))
-
-producto_7 = list(product(indices_unidos_6, indices_7))
-
-#print(producto_7)
-
-indices_unidos_7 = []
-
-for x in producto_7:
-    solucion[0] = diccionario_combinaciones["CombFila0-"+str(x[0][0])]
-    solucion[1] = diccionario_combinaciones["CombFila1-"+str(x[0][1])]
-    solucion[2] = diccionario_combinaciones["CombFila2-"+str(x[0][2])]
-    solucion[3] = diccionario_combinaciones["CombFila3-"+str(x[0][3])]
-    solucion[4] = diccionario_combinaciones["CombFila4-"+str(x[0][4])]
-    solucion[5] = diccionario_combinaciones["CombFila5-"+str(x[0][5])]
-    solucion[6] = diccionario_combinaciones["CombFila6-"+str(x[0][6])]
-    solucion[7] = diccionario_combinaciones["CombFila7-"+str(x[1])]
-    
-    if (requisitos(solucion) == 1):
-        mi_lista = list(x[0])
-        mi_lista.append(x[1])
-        indices_unidos_7.append(mi_lista)
-
-
-
-#print(indices_unidos_7)
-
-indices_8 = list(range(combinaciones_por_fila[8]))
-
-producto_8 = list(product(indices_unidos_7, indices_8))
-
-#print(producto_8)
-
-indices_unidos_8 = []
-
-for x in producto_8:
-    solucion[0] = diccionario_combinaciones["CombFila0-"+str(x[0][0])]
-    solucion[1] = diccionario_combinaciones["CombFila1-"+str(x[0][1])]
-    solucion[2] = diccionario_combinaciones["CombFila2-"+str(x[0][2])]
-    solucion[3] = diccionario_combinaciones["CombFila3-"+str(x[0][3])]
-    solucion[4] = diccionario_combinaciones["CombFila4-"+str(x[0][4])]
-    solucion[5] = diccionario_combinaciones["CombFila5-"+str(x[0][5])]
-    solucion[6] = diccionario_combinaciones["CombFila6-"+str(x[0][6])]
-    solucion[7] = diccionario_combinaciones["CombFila7-"+str(x[0][7])]
-    solucion[8] = diccionario_combinaciones["CombFila8-"+str(x[1])]
-    
-    if (requisitos(solucion) == 1):
-        mi_lista = list(x[0])
-        mi_lista.append(x[1])
-        indices_unidos_8.append(mi_lista)
-        #print(solucion)
-        break
-
-
-
-print(indices_unidos_8)
-print(solucion)
+        i+=1
+        
+    else:
+        producto_iteracion = list(product(indices_unidos, indices_iteracion))
+        indices_unidos.clear()
+        
+        for x in producto_iteracion:
+            for j in range(i+1):
+                if (j != i):
+                    solucion[j] = diccionario_combinaciones["CombFila"+str(j)+"-"+str(x[0][j])]
+                else:
+                    solucion[j] = diccionario_combinaciones["CombFila"+str(j)+"-"+str(x[1])]
+        
+        
+        
+            if (requisitos(solucion) == 1):
+                mi_lista = list(x[0])
+                mi_lista.append(x[1])
+                indices_unidos.append(mi_lista)
+                
+                if (i == 8):
+                    print(solucion)
+                    break
+                
+        
+        i+=1
